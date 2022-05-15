@@ -11,25 +11,25 @@ const cartReducer = (prevState, action) => {
 		const currentIndex = prevState.items.findIndex(
 			(el) => el.id == action.item.id,
 		)
-
+		console.log(currentIndex)
 		if (currentIndex === -1) {
 			let newItem = { ...action.item, amount: 1 }
 
 			const newItems = prevState.items.concat(newItem)
-			const newPrice = prevState.totalAmount + action.item.price
+			const newPrice = prevState.totalAmount + action.item.price * action.item.amount
 			return {
 				...prevState,
 				items: newItems,
 				totalAmount: newPrice,
 			}
 		} else {
-			const newPrice = prevState.totalAmount + action.item.price
+			const newPrice = prevState.totalAmount + action.item.price * action.item.amount
 			let newItems = prevState.items.map((el, idx) => {
 				return idx === currentIndex
 					? {
 							...el,
-							amount: el.amount + 1,
-							price: el.price + action.item.price,
+							amount: el.amount + action.item.amount,
+							price: el.price + action.item.price  * action.item.amount,
 					  }
 					: el
 			})
